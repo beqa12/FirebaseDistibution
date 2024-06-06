@@ -21,7 +21,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Make gradlew executable
-        run: chmod +x gradlew
+        run: chmod +x ./gradlew
       - name: Execute Gradle command - assembleDebug
         run: ./gradlew assembleDebug
       - name: upload artifact to Firebase App Distribution
