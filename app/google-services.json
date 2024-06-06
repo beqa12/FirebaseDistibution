@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "169502845979",
+    "project_id": "fir-distibution",
+    "storage_bucket": "fir-distibution.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169502845979:android:bf094aaf7b5d2787599cbe",
+        "android_client_info": {
+          "package_name": "com.example.firebasedistibution"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_auF5PMNdXQMlQXhm1YPUagSxmRwfDXg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
