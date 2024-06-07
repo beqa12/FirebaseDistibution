@@ -55,6 +55,9 @@ jobs:
             echo "UPLOAD=true" >> $GITHUB_ENV
             echo "COMMIT_MESSAGE=$(echo $COMMIT_MESSAGE | sed 's/\"/\\\"/g')" >> $GITHUB_ENV
           fi
+      - name: Filter commit message
+        id: filtered-message
+        run: echo "::set-output name=filtered_message::$(echo ${{ steps.commit-message.outputs.message }} | sed -E 'uploadNow"
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.5.1
         with:
@@ -62,5 +65,4 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: "Commit message: $COMMIT_MESSAGE//uploadNow/"""
-#          releaseNotes: ${{ github.event.head_commit.message }}
+          releaseNotes: ${{ github.event.head_commit.message }}
