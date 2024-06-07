@@ -22,6 +22,19 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
+      - name: Run Unit Tests
+        run: ./gradlew test
+
+      - name: Check Unit Test Results
+        run: |
+          if [ $? -eq 0 ]; then
+            echo "Unit tests passed. Proceeding with deployment."
+            echo "UNIT_TESTS_PASS=true" >> $GITHUB_ENV
+          else
+            echo "Unit tests failed. Deployment aborted."
+            echo "UNIT_TESTS_PASS=false" >> $GITHUB_ENV
+          fi
+
       - name: Execute Gradle command - assembleDebug
         run: ./gradlew assembleDebug
 
