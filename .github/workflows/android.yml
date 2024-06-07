@@ -47,8 +47,8 @@ jobs:
         run: |
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           echo "Commit message: $COMMIT_MESSAGE"
-          if [[ "${{ github.event.head_commit.message }}" != *"[upload]"* ]]; then
-            echo "Commit message does not contain [upload]. Skipping Firebase upload."
+          if [[ "${{ github.event.head_commit.message }}" != *"[uploadNow]"* ]]; then
+            echo "Commit message does not contain [uploadNow]. Skipping Firebase upload."
             echo "UPLOAD=false" >> $GITHUB_ENV
             exit 0
           else
@@ -62,4 +62,5 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: ${{ github.event.head_commit.message }}
+          releaseNotes: "Commit message: $COMMIT_MESSAGE//uploadNow/"""
+#          releaseNotes: ${{ github.event.head_commit.message }}
