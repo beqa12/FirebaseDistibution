@@ -3,7 +3,7 @@ name: Deploy To Firebase
 on:
   push:
    branches:
-     - development
+     - '*'
 jobs:
   build:
     name: Building and distributing app
@@ -34,7 +34,7 @@ jobs:
             echo "Commit message does not contain [upload]. Skipping Firebase upload."
             exit 0
           fi
-
+          --release-notes "$COMMIT_MESSAGE" \
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.5.1
         with:
