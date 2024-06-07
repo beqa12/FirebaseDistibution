@@ -30,13 +30,16 @@ jobs:
         run: |
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           echo "Commit message: $COMMIT_MESSAGE"
-          if [[ "${{ github.event.head_commit.message }}" != *"[upload]"* ]]; then
-            echo "Commit message does not contain [upload]. Skipping Firebase upload."
+          if [[ "${{ github.event.head_commit.message }}" != *"[.upload]"* ]]; then
+            echo "Commit message does not contain [.upload]. Skipping Firebase upload."
             exit 0
           fi
-          --release-notes "$COMMIT_MESSAGE" \
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.5.1
+        run: |
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          --release-notes "$COMMIT_MESSAGE" \
+
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
