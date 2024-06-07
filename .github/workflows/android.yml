@@ -38,13 +38,21 @@ jobs:
       - name: Execute Gradle command - assembleDebug
         run: ./gradlew assembleDebug
 
+      - name: Get version name
+        id: version-name
+        run: echo "VERSION_NAME=$(./gradlew -q printVersionName)" >> $GITHUB_ENV
+
+      - name: Get version code
+        id: version-code
+        run: echo "VERSION_CODE=$(./gradlew -q printVersionCode)" >> $GITHUB_ENV
+
       - name: Check commit message
         id: commit-check
         run: |
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           echo "Commit message: $COMMIT_MESSAGE"
-          if [[ "${{ github.event.head_commit.message }}" != *"[upload]"* ]]; then
-            echo "Commit message does not contain [upload]. Skipping Firebase upload."
+          if [[ "${{ github.event.head_commit.message }}" != *"[uploadNow]"* ]]; then
+            echo "Commit message does not contain [uploadNow]. Skipping Firebase upload."
             echo "UPLOAD=false" >> $GITHUB_ENV
             exit 0
           else
