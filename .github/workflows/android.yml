@@ -57,7 +57,7 @@ jobs:
           fi
       - name: Filter commit message
         id: filtered-message
-        run: echo "::set-output name=filtered_message::$(echo ${{ steps.commit-message.outputs.message }} | sed -E 'uploadNow"
+        run: echo "::set-output name=filtered_message::$(echo ${{ steps.commit-message.outputs.message }} | sed -E 'uploadNow'"
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.5.1
         with:
