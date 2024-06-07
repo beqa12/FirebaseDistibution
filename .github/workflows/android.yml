@@ -66,9 +66,11 @@ jobs:
           echo "FILTERED_MESSAGE=$FILTERED_MESSAGE" >> $GITHUB_ENV
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.5.1
+        env:
+          FILTERED_MESSAGE: ${{ env.FILTERED_MESSAGE }}
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: ${{ env.FILTERED_MESSAGE }}
+          releaseNotes: ${{ env.FILTERED_MESSAGE.message }}
