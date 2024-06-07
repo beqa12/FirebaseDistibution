@@ -57,7 +57,7 @@ jobs:
           fi
       - name: Filter commit message
         id: filtered-message
-        run: echo "::set-output name=filtered_message::$(echo ${{ $COMMIT_MESSAGE }} | sed 's/\[uploadNow\]//g')"
+        run: echo "::set-output name=filtered_message::$(echo ${{ steps.commit-message.outputs.message }} | sed 's/\[uploadNow\]//g')"
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.5.1
         with:
@@ -65,4 +65,4 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: ${{ $COMMIT_MESSAGE }}
+          releaseNotes: ${{ steps.commit-message.outputs.filtered_message }}
