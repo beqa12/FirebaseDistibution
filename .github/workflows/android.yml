@@ -38,9 +38,13 @@ jobs:
       - name: Execute Gradle command - assembleDebug
         run: ./gradlew assembleDebug
 
-      - name: Get version information
-        id: version
-        run: echo "::set-output name=versionName::$(./gradlew -q app:printVersionName)" && echo "::set-output name=versionCode::$(./gradlew -q app:printVersionCode)"
+      - name: Get version name
+        id: version-name
+        run: echo "VERSION_NAME=$(./gradlew -q printVersionName)" >> $GITHUB_ENV
+
+      - name: Get version code
+        id: version-code
+        run: echo "VERSION_CODE=$(./gradlew -q printVersionCode)" >> $GITHUB_ENV
 
       - name: Check commit message
         id: commit-check
@@ -67,4 +71,4 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: "$FILTERED_MESSAGE"
+          releaseNotes: FILTERED_MESSAGE
