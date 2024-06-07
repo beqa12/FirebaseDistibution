@@ -37,8 +37,8 @@ jobs:
         run: |
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           echo "Commit message: $COMMIT_MESSAGE"
-          if [[ "${{ github.event.head_commit.message }}" != *"[.upload]"* ]]; then
-            echo "Commit message does not contain [.upload]. Skipping Firebase upload."
+          if [[ "${{ github.event.head_commit.message }}" != *"[upload]"* ]]; then
+            echo "Commit message does not contain [upload]. Skipping Firebase upload."
             exit 0
           fi
       - name: upload artifact to Firebase App Distribution
