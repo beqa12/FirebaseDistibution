@@ -25,6 +25,11 @@ jobs:
       - name: Execute Gradle command - assembleDebug
         run: ./gradlew assembleDebug
 
+      - name: Set Commit Message
+        run: |
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          --release-notes "$COMMIT_MESSAGE" \
+
       - name: Check commit message
         id: commit-check
         run: |
@@ -36,10 +41,6 @@ jobs:
           fi
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.5.1
-      - name: Set Commit Message
-        run: |
-          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          --release-notes "$COMMIT_MESSAGE" \
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
