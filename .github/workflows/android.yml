@@ -38,6 +38,10 @@ jobs:
       - name: Execute Gradle command - assembleDebug
         run: ./gradlew assembleDebug
 
+      - name: Get version information
+        id: version
+        run: echo "::set-output name=versionName::$(./gradlew -q app:printVersionName)" && echo "::set-output name=versionCode::$(./gradlew -q app:printVersionCode)"
+
       - name: Check commit message
         id: commit-check
         run: |
