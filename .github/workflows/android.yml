@@ -27,8 +27,10 @@ jobs:
 
       - name: Set Commit Message
         run: |
+          APK_PATH=$(find $GITHUB_WORKSPACE/app/build/outputs/apk/debug/app-debug.apk")
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          --release-notes "$COMMIT_MESSAGE" \
+          firebase appdistribution:distribute $APK_PATH \
+            --release-notes "$COMMIT_MESSAGE" \
 
       - name: Check commit message
         id: commit-check
