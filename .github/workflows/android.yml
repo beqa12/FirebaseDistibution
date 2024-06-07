@@ -1,12 +1,9 @@
 name: Deploy To Firebase
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_notes:
-        type: string
-        required: true
-        default: 'Manual Build'
+  push:
+   branches:
+     - development
 jobs:
   build:
     name: Building and distributing app
@@ -27,6 +24,14 @@ jobs:
 
       - name: Execute Gradle command - assembleDebug
         run: ./gradlew assembleDebug
+
+      - name: Check commit message
+        id: commit-check
+        run: | 
+          if [[ "${{ github.event.head_commit.message }}" != *"[upload]"* ]]; then
+            echo "Commit message does not contain [upload]. Skipping Firebase upload."
+            exit 0
+          fi
 
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.5.1
