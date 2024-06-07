@@ -25,13 +25,6 @@ jobs:
       - name: Execute Gradle command - assembleDebug
         run: ./gradlew assembleDebug
 
-      - name: Set Commit Message
-        run: |
-          APK_PATH=$(find $GITHUB_WORKSPACE/app/build/outputs/apk/debug/app-debug.apk")
-          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          firebase appdistribution:distribute $APK_PATH \
-            --release-notes "$COMMIT_MESSAGE" \
-
       - name: Check commit message
         id: commit-check
         run: |
@@ -39,8 +32,19 @@ jobs:
           echo "Commit message: $COMMIT_MESSAGE"
           if [[ "${{ github.event.head_commit.message }}" != *"[upload]"* ]]; then
             echo "Commit message does not contain [upload]. Skipping Firebase upload."
+            echo "UPLOAD=false" >> $GITHUB_ENV
             exit 0
+          else
+            echo "UPLOAD=true" >> $GITHUB_ENV
+            echo "COMMIT_MESSAGE=$(echo $COMMIT_MESSAGE | sed 's/\"/\\\"/g')" >> $GITHUB_ENV
           fi
+
+      - name: Upload to Firebase App Distribution
+        if: env.UPLOAD == 'true'
+        run: |
+          APK_PATH=$(find $GITHUB_WORKSPACE/app/build/outputs/apk/debug"*.apk")
+          firebase appdistribution:distribute $APK_PATH \
+            --release-notes "${{ env.COMMIT_MESSAGE }}" \
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.5.1
         with:
